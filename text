@@ -1,0 +1,230 @@
+Algo for allotment
+
+1) check the Availability
+2) check the constraints
+3) insert the slot
+repeat step 1-3 until all the slots are set in the particular section
+if slots are filled then change the section and repeat the process
+
+repeat all the steps until all the section are filled completely
+
+
+
+
+# setting labs
+# def set_labs1(sec, lab_list, lab_count):
+#     global section_tt, section_tt, faculty_tt, lab_tt, lab_days, lab_time, end_counter, end_count, lab_index
+#     print("lab list", lab_list)
+#     labs_fac = section_labs_fac[sec]
+#     labs = section_labs[sec]
+#     l = list(itertools.product(lab_days, lab_time, lab_list))
+#     while len(l) != 0:
+#         # lab = random.choice(lab_list)
+#         # l = list(itertools.product(lab_days, lab_time))
+#         x = random.choice(l)
+#         day, time, lab = x[0], x[1], x[2]
+#         # print(sec,lab)
+#         l.remove(x)
+#         if available_lab(sec, lab, day, time):
+#             curr_lab = [day, time, sec, lab]
+#             slot_stack.push(curr_lab)
+#             section_tt[sec][day][time] = section_tt[sec][day][time + 1] = lab
+#             if len(labs[lab]) == 2:
+#                 lab_tt[labs[lab][0]][day][time] = lab_tt[labs[lab][0]][day][time + 1] = sec
+#                 lab_tt[labs[lab][1]][day][time] = lab_tt[labs[lab][1]][day][time + 1] = sec
+#                 faculty_tt[labs_fac[lab][0].getFName()][day][time] = \
+#                     faculty_tt[labs_fac[lab][0].getFName()][day][time + 1] = sub
+#                 faculty_tt[labs_fac[lab][1].getFName()][day][time] = \
+#                     faculty_tt[labs_fac[lab][1].getFName()][day][time + 1] = sub
+#             else:
+#                 lab_tt[labs[lab][0]][day][time] = lab_tt[labs[lab][0]][day][time + 1] = sec
+#                 faculty_tt[labs_fac[lab][0].getFName()][day][time] = \
+#                     faculty_tt[labs_fac[lab][0].getFName()][day][time + 1] = sub
+#             lab_count[lab] -= 1
+#             if lab_count[lab] == 0:
+#                 lab_list.remove(lab)
+#             lab_days.remove(day)
+#             if len(lab_list) == 0:
+#                 lab_days = [0, 1, 2, 3, 4]
+#                 return True
+#             for i in l:
+#                 if day in i or lab in i:
+#                     l.remove(i)
+#
+#             # print(curr_lab)
+#             ans = set_labs1(sec, lab_list, lab_count)
+#
+#             if ans == True:
+#                 end_counter += 1
+#                 if end_count == end_counter:
+#                     break
+#                 pass
+#             # elif ans==[False, 5]:
+#             #     return [False, 5]
+#             else:
+#                 curr_lab = slot_stack.pop()
+#                 if curr_lab[2] != sec:
+#                     lab_index -= 1
+#                 end_count -= 1
+#                 day = curr_lab[0]
+#                 time = curr_lab[1]
+#                 sec = curr_lab[2]
+#                 lab = curr_lab[3]
+#                 # print("clear", curr_lab)
+#                 section_tt[sec][day][time] = section_tt[sec][day][time + 1] = ''
+#                 if len(labs[lab]) == 2:
+#                     lab_tt[labs[lab][0]][day][time] = lab_tt[labs[lab][0]][day][time + 1] = ''
+#                     lab_tt[labs[lab][1]][day][time] = lab_tt[labs[lab][1]][day][time + 1] = ''
+#                     faculty_tt[labs_fac[lab][0].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][0].getFName()][day][time + 1] = ''
+#                     faculty_tt[labs_fac[lab][1].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][1].getFName()][day][time + 1] = ''
+#                 else:
+#                     lab_tt[labs[lab][0]][day][time] = lab_tt[labs[lab][0]][day][time + 1] = ''
+#                     faculty_tt[labs_fac[lab][0].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][0].getFName()][day][time + 1] = ''
+#                 lab_count[lab] += 1
+#                 if lab not in lab_list:
+#                     lab_list.append(lab)
+#                 if day not in lab_days:
+#                     lab_days.append(day)
+#                 if sum(lab_count.values()) == 5:
+#                     return False
+#                 # return False
+#
+#     return False
+
+
+# def set_labs(section, labs_list, lab_count):
+#     global section_tt, lab_tt, faculty_tt, section_labs, section_labs_fac
+#
+#     # Base case: if all labs in lab_count have been fully assigned
+#     if all(value == 0 for value in lab_count.values()):
+#         return True
+#
+#     # Select the next lab to assign
+#     for current_lab in labs_list:
+#         if lab_count[current_lab] > 0:  # Proceed only if the lab still needs to be scheduled
+#
+#             for day in range(len(section_tt[section])):  # Iterate over days
+#                 for time in range(len(section_tt[section][day]) - 1):  # Check pairs of time slots
+#                     if available_lab(section, current_lab, day, time):
+#                         # Assign lab to the timetable
+#                         section_tt[section][day][time] = current_lab
+#                         section_tt[section][day][time + 1] = current_lab
+#                         lab_tt[section_labs[section][current_lab][0]][day][time] = section
+#                         lab_tt[section_labs[section][current_lab][0]][day][time + 1] = section
+#
+#                         if '3' in section:  # Assign faculty if applicable
+#                             faculty_tt[section_labs_fac[section][current_lab][0].getFName()][day][time] = section
+#                             faculty_tt[section_labs_fac[section][current_lab][0].getFName()][day][time + 1] = section
+#                             faculty_tt[section_labs_fac[section][current_lab][1].getFName()][day][time] = section
+#                             faculty_tt[section_labs_fac[section][current_lab][1].getFName()][day][time + 1] = section
+#
+#                         # Reduce the remaining count for this lab
+#                         lab_count[current_lab] -= 1
+#
+#                         # Recursive call for remaining labs
+#                         if set_labs(section, labs_list, lab_count):
+#                             return True
+#
+#                         # Backtrack: Unset the lab allocation
+#                         section_tt[section][day][time] = ''
+#                         section_tt[section][day][time + 1] = ''
+#                         lab_tt[section_labs[section][current_lab][0]][day][time] = ''
+#                         lab_tt[section_labs[section][current_lab][0]][day][time + 1] = ''
+#
+#                         if '3' in section:  # Unset faculty if applicable
+#                             faculty_tt[section_labs_fac[section][current_lab][0].getFName()][day][time] = ''
+#                             faculty_tt[section_labs_fac[section][current_lab][0].getFName()][day][time + 1] = ''
+#                             faculty_tt[section_labs_fac[section][current_lab][1].getFName()][day][time] = ''
+#                             faculty_tt[section_labs_fac[section][current_lab][1].getFName()][day][time + 1] = ''
+#
+#                         # Restore the count of the lab
+#                         lab_count[current_lab] += 1
+#
+#     return False  # Unable to assign labs
+
+
+# def set_labs3(sec, lab_list, lab_count):
+#     global section_tt, section_tt, faculty_tt, lab_tt, lab_days, lab_time, end_counter, end_count, lab_index
+#     if end_count == end_counter:
+#         return True
+#
+#     if sum(lab_count.values()) == 0:
+#         lab_days = [0, 1, 2, 3, 4]
+#         return True
+#
+#     labs_fac = section_labs_fac[sec]
+#     labs = section_labs[sec]
+#
+#     random.shuffle(lab_list)
+#     for i in lab_list:
+#         li = list(itertools.product(lab_days, lab_time))
+#
+#         random.shuffle(li)
+#         for ch in li:
+#             # ch=random.choice(li)
+#             day = ch[0]
+#             time = ch[1]
+#             lab = i
+#             li.remove(ch)
+#             if available_lab(sec, lab, day, time):
+#                 section_tt[sec][day][time] = section_tt[sec][day][time + 1] = lab
+#                 if len(labs[lab]) == 2:
+#                     lab_tt[labs[lab][0]][day][time] = lab_tt[labs[lab][0]][day][time + 1] = sec
+#                     lab_tt[labs[lab][1]][day][time] = lab_tt[labs[lab][1]][day][time + 1] = sec
+#                     faculty_tt[labs_fac[lab][0].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][0].getFName()][day][time + 1] = sub
+#                     faculty_tt[labs_fac[lab][1].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][1].getFName()][day][time + 1] = sub
+#                 else:
+#                     lab_tt[labs[lab][0]][day][time] = lab_tt[labs[lab][0]][day][time + 1] = sec
+#                     faculty_tt[labs_fac[lab][0].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][0].getFName()][day][time + 1] = sub
+#
+#                 lab_count[lab] -= 1
+#
+#                 if lab_count[lab] == 0:
+#                     lab_list.remove(i)
+#
+#                 lab_days.remove(day)
+#
+#                 if sum(lab_count.values()) == 0:
+#                     lab_days = [0, 1, 2, 3, 4]
+#                     # lab_index+=1
+#
+#                 if set_labs3(list(sections.keys())[lab_index], lab_list, lab_count):
+#                     end_counter += 1
+#                     return True
+#                 # print("backtrack")
+#                 sec = list(sections.keys())[lab_index]
+#
+#                 if lab not in lab_list:
+#                     lab_list.append(i)
+#
+#                 # if lab_list!=[]:
+#                 #     lab_index-=1
+#                 if day not in lab_days:
+#                     lab_days.append(day)
+#                 # li.append(ch)
+#                 # print("removing ", lab, sec)
+#                 section_tt[sec][day][time] = section_tt[sec][day][time + 1] = ''
+#                 if len(labs[lab]) == 2:
+#                     lab_tt[labs[lab][0]][day][time] = lab_tt[labs[lab][0]][day][time + 1] = ''
+#                     lab_tt[labs[lab][1]][day][time] = lab_tt[labs[lab][1]][day][time + 1] = ''
+#                     faculty_tt[labs_fac[lab][0].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][0].getFName()][day][time + 1] = ''
+#                     faculty_tt[labs_fac[lab][1].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][1].getFName()][day][time + 1] = ''
+#                 else:
+#                     lab_tt[labs[lab][0]][day][time] = lab_tt[labs[lab][0]][day][time + 1] = ''
+#                     faculty_tt[labs_fac[lab][0].getFName()][day][time] = \
+#                         faculty_tt[labs_fac[lab][0].getFName()][day][time + 1] = ''
+#
+#                 lab_count[lab] += 1
+#                 break
+#                 # continue
+#             li.append(ch)
+#
+#     return False
